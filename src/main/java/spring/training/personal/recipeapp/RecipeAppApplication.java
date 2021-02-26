@@ -1,13 +1,13 @@
-package spring.training.personal.recipeproject;
+package spring.training.personal.recipeapp;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class RecipeProjectApplication {
+public class RecipeAppApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(RecipeProjectApplication.class, args);
+        SpringApplication.run(RecipeAppApplication.class, args);
     }
 
 }

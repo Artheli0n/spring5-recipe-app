@@ -1,4 +1,4 @@
-package spring.training.personal.recipeproject.controllers;
+package spring.training.personal.recipeapp.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

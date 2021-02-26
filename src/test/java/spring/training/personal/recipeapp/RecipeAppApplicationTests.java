@@ -1,10 +1,10 @@
-package spring.training.personal.recipeproject;
+package spring.training.personal.recipeapp;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class RecipeProjectApplicationTests {
+class RecipeAppApplicationTests {
 
     @Test
     void contextLoads() {
