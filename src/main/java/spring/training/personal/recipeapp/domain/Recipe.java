@@ -15,6 +15,7 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -30,10 +31,11 @@ public class Recipe {
     private Integer servings;
     private String source;
     private String url;
+
+    @Lob
     private String directions;
 
-    // use this annotation for large objects (it creates a BLOB as this is a String) to have higher storage space allocated
-    // (
+    // use this annotation for large objects (it creates a BLOB as this is an array of bites) to have higher storage space allocated
     @Lob
     private Byte[] image;
 
@@ -47,7 +49,7 @@ public class Recipe {
     private Difficulty difficulty;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "recipe")
-    private Set<Ingredient> ingredient;
+    private Set<Ingredient> ingredients = new HashSet<>();
 
     @ManyToMany()
     @JoinTable(
@@ -56,7 +58,7 @@ public class Recipe {
             inverseJoinColumns = @JoinColumn(name = "category_id")
     )
 
-    private Set<Category> categories;
+    private Set<Category> categories = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -146,12 +148,12 @@ public class Recipe {
         this.difficulty = difficulty;
     }
 
-    public Set<Ingredient> getIngredient() {
-        return ingredient;
+    public Set<Ingredient> getIngredients() {
+        return ingredients;
     }
 
-    public void setIngredient(final Set<Ingredient> ingredient) {
-        this.ingredient = ingredient;
+    public void setIngredients(final Set<Ingredient> ingredients) {
+        this.ingredients = ingredients;
     }
 
     public Set<Category> getCategories() {
