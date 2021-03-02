@@ -1,5 +1,6 @@
 package spring.training.personal.recipeapp.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import spring.training.personal.recipeapp.domain.Category;
 import spring.training.personal.recipeapp.domain.UnitOfMeasure;
 import spring.training.personal.recipeapp.repositories.CategoryRepository;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.Optional;
 
+@Slf4j
 @Controller
 public class IndexController {
 
@@ -28,11 +30,17 @@ public class IndexController {
 
     @RequestMapping({"", "/", "/index"})
     public String getIndexPage(Model model) {
+        if (log.isDebugEnabled()) {
+            log.debug("Getting Index Page");
+        }
+
         Optional<Category> categoryOptional = categoryRepository.findByDescription("American");
         Optional<UnitOfMeasure> unitOfMeasureOptional = unitOfMeasureRepository.findByDescription("Teaspoon");
 
-        System.out.println("Cat Id is:" + categoryOptional.get().getId());
-        System.out.println("UOM Id is:" + unitOfMeasureOptional.get().getId());
+        if (log.isDebugEnabled()) {
+            log.debug("Cat Id is:" + categoryOptional.get().getId());
+            log.debug("UOM Id is:" + unitOfMeasureOptional.get().getId());
+        }
 
         model.addAttribute("recipes", recipeService.getRecipes());
 
