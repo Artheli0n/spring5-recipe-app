@@ -9,6 +9,7 @@ import spring.training.personal.recipeapp.domain.enums.Difficulty;
 import spring.training.personal.recipeapp.repositories.CategoryRepository;
 import spring.training.personal.recipeapp.repositories.RecipeRepository;
 import spring.training.personal.recipeapp.repositories.UnitOfMeasureRepository;
+import spring.training.personal.recipeapp.services.IngredientService;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
@@ -22,15 +23,18 @@ import java.util.List;
 public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEvent> {
 
     private final RecipeRepository recipeRepository;
-    private CategoryRepository categoryRepository;
-    private UnitOfMeasureRepository unitOfMeasureRepository;
+    private final CategoryRepository categoryRepository;
+    private final UnitOfMeasureRepository unitOfMeasureRepository;
+    private final IngredientService ingredientService;
 
     public RecipeBootstrap(final RecipeRepository recipeRepository,
                            final CategoryRepository categoryRepository,
-                           final UnitOfMeasureRepository unitOfMeasureRepository) {
+                           final UnitOfMeasureRepository unitOfMeasureRepository,
+                           final IngredientService ingredientService) {
         this.recipeRepository = recipeRepository;
         this.categoryRepository = categoryRepository;
         this.unitOfMeasureRepository = unitOfMeasureRepository;
+        this.ingredientService = ingredientService;
     }
 
     @Override
@@ -135,6 +139,6 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
     }
 
     private Ingredient buildIngredient(final String description, final BigDecimal amount, final UnitOfMeasure uom) {
-        return new Ingredient(description, amount, uom);
+        return ingredientService.saveIngredient(new Ingredient(description, amount, uom));
     }
 }

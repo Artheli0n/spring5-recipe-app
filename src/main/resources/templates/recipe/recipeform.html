@@ -17,13 +17,12 @@
             crossorigin="anonymous" th:src="@{/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js}"></script>
 </head>
 <body>
-<!--/*@thymesVar id="recipe" type="guru.springframework.domain.Recipe"*/-->
 <div class="container-fluid" style="margin-top: 20px">
     <div class="row">
         <div class="col-md-6 col-md-offset-3">
-<!--           th:action tells Thymeleaf we will post at that url -->
+            <!--           th:action tells Thymeleaf we will post at that url -->
             <form th:object="${recipe}" th:action="@{/recipe/}" method="post">
-<!--               as the form will be used both for update and create recipes so for update we will need the id -->
+                <!--               as the form will be used both for update and create recipes so for update we will need the id -->
                 <input type="hidden" th:field="*{id}"/>
                 <div class="pannel-group">
                     <div class="panel panel-primary">
@@ -34,7 +33,7 @@
                             <div class="row">
                                 <div class="col-md-3 form-group">
                                     <label>Recipe Description:</label>
-<!--                                   *{description} = property of recipe (* similar to dot notation) -->
+                                    <!--                                   *{description} = property of recipe (* similar to dot notation) -->
                                     <input type="text" class="form-control" th:field="*{description}"/>
                                 </div>
                             </div>
@@ -68,10 +67,11 @@
                                 </div>
                                 <div class="col-md-3 form-group">
                                     <label>Difficulty:</label>
-                                    <select class="form-control">
-                                        <option>Easy</option>
-                                        <option>Medium</option>
-                                        <option>Hard</option>
+                                    <select class="form-control" th:field="*{difficulty}">
+<!--                                       T is for type, this means give me a type of ... -->
+                                        <option th:each="difficultyValue : ${T(spring.training.personal.recipeapp.domain.enums.Difficulty).values()}"
+                                                th:value="${difficultyValue.name()}" th:text="${difficultyValue.difficultyCode}">Hard
+                                        </option>
                                     </select>
                                 </div>
                             </div>
@@ -97,9 +97,6 @@
                                 <div class="col-md-11 ">
                                     <h1 class="panel-title">Ingredients</h1>
                                 </div>
-                                <div class="col-md-1">
-                                    <a class="btn btn-default" href="#" role="button">Edit</a>
-                                </div>
                             </div>
                         </div>
                         <div class="panel-body">
@@ -110,8 +107,8 @@
                                         <li th:remove="all">1 Teaspoon of chocolate</li>
                                         <li th:each="ingredient : ${recipe.ingredients}"
                                             th:text="${(ingredient.getAmount() +
-                                        ' ' + ingredient.uom.getDescription() +
-                                        ' - ' + ingredient.getDescription())}">1 Teaspoon of Sugar
+                                                            ' ' + ingredient.uom.getDescription() +
+                                                            ' - ' + ingredient.getDescription())}">
                                         </li>
                                     </ul>
                                 </div>

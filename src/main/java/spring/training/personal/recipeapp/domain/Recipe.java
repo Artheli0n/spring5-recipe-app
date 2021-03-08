@@ -1,6 +1,7 @@
 package spring.training.personal.recipeapp.domain;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import spring.training.personal.recipeapp.domain.enums.Difficulty;
 
 import javax.persistence.CascadeType;
@@ -21,6 +22,7 @@ import java.util.Set;
 
 @Entity
 @Data
+@EqualsAndHashCode(of = {"id"})
 public class Recipe {
 
     @Id
@@ -50,7 +52,7 @@ public class Recipe {
     @Enumerated(value = EnumType.STRING)
     private Difficulty difficulty;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "recipe")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "recipe", orphanRemoval = true)
     private Set<Ingredient> ingredients = new HashSet<>();
 
     @ManyToMany()
@@ -69,14 +71,14 @@ public class Recipe {
         }
     }
 
-    public Recipe addIngredient(Ingredient ingredient) {
-        ingredient.setRecipe(this);
-        this.ingredients.add(ingredient);
-        return this;
+    public void addIngredient(Ingredient ingredient) {
+        if (ingredient != null) {
+            ingredient.setRecipe(this);
+            this.ingredients.add(ingredient);
+        }
     }
 
-    public Recipe addCategory(final Category category) {
+    public void addCategory(final Category category) {
         this.categories.add(category);
-        return this;
     }
 }

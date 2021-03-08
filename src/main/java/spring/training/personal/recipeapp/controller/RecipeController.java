@@ -5,7 +5,6 @@ import spring.training.personal.recipeapp.commands.RecipeCommand;
 import spring.training.personal.recipeapp.services.RecipeService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,7 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Slf4j
 public class RecipeController {
 
-    final private RecipeService recipeService;
+    private final RecipeService recipeService;
 
     public RecipeController(final RecipeService recipeService) {
         this.recipeService = recipeService;

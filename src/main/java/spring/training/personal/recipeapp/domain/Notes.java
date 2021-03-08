@@ -10,9 +10,9 @@ import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.OneToOne;
 
-@Data
-@EqualsAndHashCode(exclude = {"recipe"})
 @Entity
+@Data
+@EqualsAndHashCode(of = {"id"})
 public class Notes {
 
     @Id

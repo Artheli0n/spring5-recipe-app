@@ -2,9 +2,6 @@ package spring.training.personal.recipeapp.domain;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -14,9 +11,9 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import java.math.BigDecimal;
 
-@Data
-@EqualsAndHashCode(exclude = {"recipe"})
 @Entity
+@Data
+@EqualsAndHashCode(of = {"id"})
 public class Ingredient {
 
     @Id
@@ -32,7 +29,7 @@ public class Ingredient {
     @ManyToOne
     private Recipe recipe;
 
-    public Ingredient(){
+    public Ingredient() {
     }
 
     public Ingredient(final String description, final BigDecimal amount, final UnitOfMeasure uom) {
