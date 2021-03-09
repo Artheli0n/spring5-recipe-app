@@ -12,6 +12,7 @@ import spring.training.personal.recipeapp.converters.RecipeToRecipeCommand;
 import spring.training.personal.recipeapp.converters.UnitOfMeasureCommandToUnitOfMeasure;
 import spring.training.personal.recipeapp.converters.UnitOfMeasureToUnitOfMeasureCommand;
 import spring.training.personal.recipeapp.domain.Recipe;
+import spring.training.personal.recipeapp.exceptions.NotFoundException;
 import spring.training.personal.recipeapp.repositories.RecipeRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,6 +26,7 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.AdditionalAnswers.returnsFirstArg;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -64,6 +66,15 @@ class RecipeServiceImplTest {
         assertNotNull(recipeReturned, "Null recipe returned");
         verify(recipeRepository).findById(anyLong());
         verify(recipeRepository, never()).findAll();
+    }
+
+    @Test
+    public void getRecipeByIdTestNotFound() {
+        Optional<Recipe> recipeOptional = Optional.empty();
+
+        when(recipeRepository.findById(anyLong())).thenReturn(recipeOptional);
+
+        assertThrows(NotFoundException.class, () -> recipeService.findById(1L));
     }
 
     @Test

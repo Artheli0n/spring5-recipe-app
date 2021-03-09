@@ -5,6 +5,7 @@ import spring.training.personal.recipeapp.commands.RecipeCommand;
 import spring.training.personal.recipeapp.converters.RecipeCommandToRecipe;
 import spring.training.personal.recipeapp.converters.RecipeToRecipeCommand;
 import spring.training.personal.recipeapp.domain.Recipe;
+import spring.training.personal.recipeapp.exceptions.NotFoundException;
 import spring.training.personal.recipeapp.repositories.RecipeRepository;
 import org.springframework.stereotype.Service;
 
@@ -41,7 +42,7 @@ public class RecipeServiceImpl implements RecipeService {
 
     @Override
     public Recipe findById(Long id) {
-        return recipeRepository.findById(id).orElseThrow(() -> new RuntimeException("Recipe not Found"));
+        return recipeRepository.findById(id).orElseThrow(() -> new NotFoundException("Recipe not Found"));
     }
 
     @Override
