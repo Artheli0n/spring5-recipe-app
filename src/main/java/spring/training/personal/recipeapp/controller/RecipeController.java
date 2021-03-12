@@ -7,6 +7,7 @@ import spring.training.personal.recipeapp.services.RecipeService;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -15,10 +16,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.validation.Valid;
+
 @Controller
 @Slf4j
 public class RecipeController {
 
+    public static final String RECIPE_RECIPEFORM = "recipe/recipeform";
     private final RecipeService recipeService;
 
     public RecipeController(final RecipeService recipeService) {
@@ -37,20 +41,25 @@ public class RecipeController {
     public String newRecipe(Model model) {
         model.addAttribute("recipe", new RecipeCommand());
 
-        return "recipe/recipeform";
+        return RECIPE_RECIPEFORM;
     }
 
     @GetMapping({"recipe/{id}/update"})
     public String updateRecipe(@PathVariable String id, Model model) {
         model.addAttribute("recipe", recipeService.findCommandById(Long.valueOf(id)));
-        return "recipe/recipeform";
+        return RECIPE_RECIPEFORM;
     }
 
     // @ModelAttribute tells Spring to bind the form post parameters to the RecipeCommand parameter (done through the naming convention)
     // redirect: is a command that tells Thymeleaf to redirect to another html page
 //    @RequestMapping(name = "recipe", method = RequestMethod.POST) // old way to do post request mapping
     @PostMapping({"recipe"})
-    public String saveOrUpdate(@ModelAttribute RecipeCommand recipe) {
+    public String saveOrUpdate(@Valid @ModelAttribute("recipe") RecipeCommand recipe, BindingResult result) {
+        if (result.hasErrors()) {
+            result.getAllErrors().forEach(objectError -> log.error(objectError.toString()));
+            return RECIPE_RECIPEFORM;
+        }
+
         RecipeCommand savedCommand = recipeService.saveRecipeCommand(recipe);
 
         return "redirect:/recipe/" + savedCommand.getId() + "/show";
@@ -75,21 +84,6 @@ public class RecipeController {
         ModelAndView modelAndView = new ModelAndView();
 
         modelAndView.setViewName("404error");
-        modelAndView.addObject("exception", e);
-
-        return modelAndView;
-    }
-
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(NumberFormatException.class)
-    public ModelAndView handleBadRequest(Exception e) {
-
-        log.error("Handling bad request exception");
-        log.error(e.getMessage());
-
-        ModelAndView modelAndView = new ModelAndView();
-
-        modelAndView.setViewName("400error");
         modelAndView.addObject("exception", e);
 
         return modelAndView;
